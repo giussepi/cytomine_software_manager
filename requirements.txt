@@ -1,0 +1,6 @@
+jedi
+ipython
+pyflakes
+pylint
+autopep8
+Django==3.0.6
