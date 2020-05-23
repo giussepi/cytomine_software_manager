@@ -30,6 +30,14 @@ Interface to run cytomine software that requires GPU
 	`create user QNZhang with encrypted password 'MMVB10medical';`
 	`grant all privileges on database cyto_soft_mgr_db to QNZhang;`
 
+6. Run DB migrations
+
+	`./manage.py migrate`
+
+7. Create your admin super user
+
+	`./manage.py createsuperuser`
+
 
 
 # RUN DJANGO DEVELOPMENT SERVER

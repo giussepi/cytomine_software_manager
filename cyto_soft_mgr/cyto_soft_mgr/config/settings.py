@@ -15,9 +15,11 @@ import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Inserting apps directory
-APPS_DIR = os.path.join(BASE_DIR, os.path.pardir, 'apps')
+APPS_DIR = os.path.join(BASE_DIR, 'apps')
 sys.path.insert(0, APPS_DIR)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -30,6 +32,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ADMINS = (
+    ('Giussepi', 'e.g.lopezmolina@qmul.ac.uk'),
+)
 
 # Application definition
 
@@ -44,17 +49,9 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = []
 
-PROJECT_APPS = []
+PROJECT_APPS = ['core', 'cytomine_softwares']
 
-
-# IMPORTANT NOTE: all apps must be on APPS_ORDER tuple in order to be
-# shown on the django admin
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
-
-# custom django admin apps order (uses app labels)
-# IMPORTANT NOTE: all apps must be on the following tuple in order to be
-# shown on the django admin
-# APPS_ORDER = ()
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -140,3 +137,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+###############################################################################
+#                             Cytomine credentials                            #
+###############################################################################
+
+CYTOMINE_HOST = 'localhost-core'
+CYTOMINE_PUBLIC_KEY = 'd2be8bd7-2b0b-40c3-9e81-5ad5765568f3'
+CYTOMINE_PRIVATE_KEY = '6dfe27d7-2ad1-4ca2-8ee9-6321ec3f1318'
