@@ -4,6 +4,7 @@
 from django.db import models
 
 from core.models import BaseLog
+from cytomine_softwares.constants import JobStatus
 
 
 class Image(BaseLog):
@@ -38,6 +39,18 @@ class Software(BaseLog):
         return str(self.cyto_id)
 
 
+class JobError(BaseLog):
+    """ Holds details of erros raised when executing a Job through Cytomine """
+    return_code = models.CharField(max_length=60)
+    args = models.TextField(blank=True)
+    stderr = models.TextField(blank=True)
+    # stdout = models.TextField(blank=True)
+
+    def __str__(self):
+        """ Returns the string object representation """
+        return str(self.pk)
+
+
 class Job(BaseLog):
     """ Hold data from cytomine jobs excecuted """
     cyto_image_id = models.IntegerField(
@@ -48,6 +61,9 @@ class Job(BaseLog):
     software = models.ForeignKey('Software', on_delete=models.CASCADE)
     image = models.ForeignKey(
         'Image', on_delete=models.CASCADE, verbose_name='Docker Image name')
+    status = models.CharField(
+        max_length=1, choices=JobStatus.CHOICES, default=JobStatus.NOT_STARTED)
+    error = models.OneToOneField('JobError', on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         """ Returns the string object representation """
