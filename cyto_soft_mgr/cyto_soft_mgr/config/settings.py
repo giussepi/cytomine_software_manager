@@ -146,3 +146,14 @@ STATIC_URL = '/static/'
 CYTOMINE_HOST = 'localhost-core'
 CYTOMINE_PUBLIC_KEY = 'd2be8bd7-2b0b-40c3-9e81-5ad5765568f3'
 CYTOMINE_PRIVATE_KEY = '6dfe27d7-2ad1-4ca2-8ee9-6321ec3f1318'
+
+###############################################################################
+#                                    Celery                                   #
+###############################################################################
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_WORKER_POOL = 'solo'
+# CELERY_WORKER_CONCURRENCY = 2
+
+# TODO: Create the celery daemon with supervisord
+# https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing

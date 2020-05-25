@@ -69,3 +69,37 @@ class Job(BaseLog):
         """ Returns the string object representation """
         return '{}-{}-{}-{}'.format(
             self.cyto_image_id, self.project, self.software, self.image)
+
+    def update_status(self, new_status):
+        """
+        Updates the status
+
+        Args:
+            new_status (str): new JobStatus
+        """
+        assert isinstance(new_status, str)
+        assert new_status in [i[0] for i in JobStatus.CHOICES]
+
+        if self.status != new_status:
+            self.status = new_status
+            self.save()
+
+    def set_in_progress(self):
+        """ Sets the status to in progress """
+        self.update_status(JobStatus.IN_PROGRESS)
+
+    def set_as_completed(self):
+        """ Sets the status to completed """
+        self.update_status(JobStatus.COMPLETED)
+
+    def set_failed(self, error=None):
+        """
+        Sets the status to Failed
+        Args:
+            error (JobError): JobError instance
+        """
+        if error is not None:
+            assert isinstance(error, JobError)
+
+        self.error = error
+        self.update_status(JobStatus.FAILED)

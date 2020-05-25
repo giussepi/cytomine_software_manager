@@ -4,3 +4,4 @@ pyflakes
 pylint
 autopep8
 Django==3.0.6
+celery

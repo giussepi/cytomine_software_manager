@@ -38,14 +38,30 @@ Interface to run cytomine software that requires GPU
 
 	`./manage.py createsuperuser`
 
+8. Install/run RabbitMQ
+    `docker run -d -p 5672:5672 rabbitmq`
 
 
-# RUN DJANGO DEVELOPMENT SERVER
 
-1. Make manage.py executable (if you haven't done it before)
+# DEVELOPMENT MODE
+
+## RUN DJANGO DEVELOPMENT SERVER
+
+1. Set debug mode in cyto_soft_mgr.config.settings.py
+
+	`DEBUG = True`
+
+2. Make manage.py executable (if you haven't done it before)
 
     `sudo chmod +x manage.py`
 
-2. Run django server
+3. Run django server
 
     `./manage.py runserver 0.0.0.0:8082`
+
+
+## RUN CELERY WORKER
+
+1. Run the celery worker server (from the same folder where manage.py is located)
+
+	`celery -A cyto_soft_mgr worker -l info`
