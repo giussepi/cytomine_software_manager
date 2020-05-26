@@ -25,20 +25,24 @@ Interface to run cytomine software that requires GPU
 
 5. Create your new database, user and pass
 
+	`sudo -u postgres createdb cyto_soft_mgr_db`
 	`sudo -u postgres pqsl`
-	`createdb cyto_soft_mgr_db;`
 	`create user QNZhang with encrypted password 'MMVB10medical';`
 	`grant all privileges on database cyto_soft_mgr_db to QNZhang;`
 
-6. Run DB migrations
+6. Make manage.py executable
+
+        `sudo chmod +x manage.py`
+
+7. Run DB migrations
 
 	`./manage.py migrate`
 
-7. Create your admin super user
+8. Create your admin super user
 
 	`./manage.py createsuperuser`
 
-8. Install/run RabbitMQ
+9. Install/run RabbitMQ
 
     `docker run -d -p 5672:5672 rabbitmq`
 
@@ -56,7 +60,7 @@ Interface to run cytomine software that requires GPU
 
     `sudo chmod +x manage.py`
 
-3. Make sure the RabbitMQ docker container is running. See step 8 from installation section
+3. Make sure the RabbitMQ docker container is running. See step 9 from installation section
 
 4. Run django development server
 
@@ -85,6 +89,6 @@ Interface to run cytomine software that requires GPU
 
 ## CELERY
 
-1. Make sure the RabbitMQ docker container is running. See step 8 from installation section
+1. Make sure the RabbitMQ docker container is running. See step 9 from installation section
 
 2. Run Celery as a daemon
