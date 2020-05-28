@@ -8,10 +8,12 @@ class JobStatus:
     COMPLETED = '1'
     IN_PROGRESS = '2'
     FAILED = '3'
+    NEED_VERIFICATION = '4'
 
     CHOICES = (
         (NOT_STARTED, 'Not started'),
         (COMPLETED, 'Completed'),
         (IN_PROGRESS, 'In progress'),
-        (FAILED, 'Failed')
+        (FAILED, 'Failed'),
+        (NEED_VERIFICATION, 'Needs verification')
     )

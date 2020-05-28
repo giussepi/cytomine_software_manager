@@ -44,7 +44,7 @@ class JobError(BaseLog):
     return_code = models.CharField(max_length=60)
     args = models.TextField(blank=True)
     stderr = models.TextField(blank=True)
-    # stdout = models.TextField(blank=True)
+    stdout = models.TextField(blank=True)
 
     def __str__(self):
         """ Returns the string object representation """
@@ -69,3 +69,49 @@ class Job(BaseLog):
         """ Returns the string object representation """
         return '{}-{}-{}-{}'.format(
             self.cyto_image_id, self.project, self.software, self.image)
+
+    def update_status(self, new_status):
+        """
+        Updates the status
+
+        Args:
+            new_status (str): new JobStatus
+        """
+        assert isinstance(new_status, str)
+        assert new_status in [i[0] for i in JobStatus.CHOICES]
+
+        if self.status != new_status:
+            self.status = new_status
+            self.save()
+
+    def set_in_progress(self):
+        """ Sets the status to in progress """
+        self.update_status(JobStatus.IN_PROGRESS)
+
+    def set_as_completed(self):
+        """ Sets the status to completed """
+        self.update_status(JobStatus.COMPLETED)
+
+    def set_failed(self, error=None):
+        """
+        Sets the status to Failed
+        Args:
+            error (JobError): JobError instance
+        """
+        if error is not None:
+            assert isinstance(error, JobError)
+
+        self.error = error
+        self.update_status(JobStatus.FAILED)
+
+    def set_need_verification(self):
+        """ Sets the status to need_verification """
+        self.update_status(JobStatus.NEED_VERIFICATION)
+
+    def in_progress(self):
+        """ Returns true if the status is JobStatus.IN_PROGRESS """
+        return self.status == JobStatus.IN_PROGRESS
+
+    def need_verification(self):
+        """ Returns true if the status is JobStatus.NEED_VERIFICATION """
+        return self.status == JobStatus.NEED_VERIFICATION

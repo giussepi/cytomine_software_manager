@@ -15,7 +15,7 @@ Interface to run cytomine software that requires GPU
 
   	   `pg_ctlcluster 12 main start`
 
-    2. You can see the logs by running:
+    3. You can see the logs by running:
 
 	   `tail -f /var/lib/postgresql/12/main /var/log/postgresql/postgresql-12-main.log`
 
@@ -25,27 +25,70 @@ Interface to run cytomine software that requires GPU
 
 5. Create your new database, user and pass
 
+	`sudo -u postgres createdb cyto_soft_mgr_db`
 	`sudo -u postgres pqsl`
-	`createdb cyto_soft_mgr_db;`
 	`create user QNZhang with encrypted password 'MMVB10medical';`
 	`grant all privileges on database cyto_soft_mgr_db to QNZhang;`
 
-6. Run DB migrations
+6. Make manage.py executable
+
+        `sudo chmod +x manage.py`
+
+7. Run DB migrations
 
 	`./manage.py migrate`
 
-7. Create your admin super user
+8. Create your admin super user
 
 	`./manage.py createsuperuser`
 
+9. Install/run RabbitMQ
+
+    `docker run -d -p 5672:5672 rabbitmq`
 
 
-# RUN DJANGO DEVELOPMENT SERVER
 
-1. Make manage.py executable (if you haven't done it before)
+# DEVELOPMENT MODE
+
+## DJANGO
+
+1. Set debug mode in cyto_soft_mgr.config.settings.py
+
+	`DEBUG = True`
+
+2. Make manage.py executable (if you haven't done it before)
 
     `sudo chmod +x manage.py`
 
-2. Run django server
+3. Make sure the RabbitMQ docker container is running. See step 9 from installation section
+
+4. Run django development server
 
     `./manage.py runserver 0.0.0.0:8082`
+
+
+## CELERY
+
+1. Run the celery worker server (from the same folder where manage.py is located)
+
+	`celery -A cyto_soft_mgr worker -l info`
+
+
+# PRODUCTION MODE
+
+## DJANGO
+
+1. Run Django collectstatic command
+
+	`./manage.py collectstatic`
+
+2. Set `settings.DEBUG` to False
+
+3. Add your server IP to `settings.ALLOWED_HOSTS`
+
+
+## CELERY
+
+1. Make sure the RabbitMQ docker container is running. See step 9 from installation section
+
+2. Run Celery as a daemon
