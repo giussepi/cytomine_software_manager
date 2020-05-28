@@ -30,7 +30,7 @@ SECRET_KEY = 'f3lc!k-b(5i-rhmf!e*6zz(#@e(%jjlg*uuwq)yqte+-!1qp!9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '90.252.110.113', '192.168.42.238', '192.168.42.129']
 
 ADMINS = (
     ('Giussepi', 'e.g.lopezmolina@qmul.ac.uk'),
@@ -155,6 +155,9 @@ CYTOMINE_PRIVATE_KEY = '6dfe27d7-2ad1-4ca2-8ee9-6321ec3f1318'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_WORKER_POOL = 'solo'
 # CELERY_WORKER_CONCURRENCY = 2
+CELERY_ALWAYS_EAGER = False
+CELERY_BROKER_HEARTBEAT = 0
+CELERY_TASK_TRACK_STARTED = True
 
 # TODO: Create the celery daemon with supervisord
 # https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing

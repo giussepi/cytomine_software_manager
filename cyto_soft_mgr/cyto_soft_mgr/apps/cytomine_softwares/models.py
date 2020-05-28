@@ -44,7 +44,7 @@ class JobError(BaseLog):
     return_code = models.CharField(max_length=60)
     args = models.TextField(blank=True)
     stderr = models.TextField(blank=True)
-    # stdout = models.TextField(blank=True)
+    stdout = models.TextField(blank=True)
 
     def __str__(self):
         """ Returns the string object representation """
@@ -103,3 +103,15 @@ class Job(BaseLog):
 
         self.error = error
         self.update_status(JobStatus.FAILED)
+
+    def set_need_verification(self):
+        """ Sets the status to need_verification """
+        self.update_status(JobStatus.NEED_VERIFICATION)
+
+    def in_progress(self):
+        """ Returns true if the status is JobStatus.IN_PROGRESS """
+        return self.status == JobStatus.IN_PROGRESS
+
+    def need_verification(self):
+        """ Returns true if the status is JobStatus.NEED_VERIFICATION """
+        return self.status == JobStatus.NEED_VERIFICATION
