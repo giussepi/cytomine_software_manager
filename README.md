@@ -50,6 +50,15 @@ Interface to run cytomine software that requires GPU
 
 # DEVELOPMENT MODE
 
+## RabbitMQ & CELERY
+
+1. Make sure the RabbitMQ docker container is running. See step 9 from installation section
+
+2. Run the celery worker server (from the same folder where manage.py is located)
+
+	`celery -A cyto_soft_mgr worker -l info`
+
+
 ## DJANGO
 
 1. Set debug mode in cyto_soft_mgr.config.settings.py
@@ -60,21 +69,20 @@ Interface to run cytomine software that requires GPU
 
     `sudo chmod +x manage.py`
 
-3. Make sure the RabbitMQ docker container is running. See step 9 from installation section
-
-4. Run django development server
+3. Run django development server
 
     `./manage.py runserver 0.0.0.0:8082`
 
 
-## CELERY
-
-1. Run the celery worker server (from the same folder where manage.py is located)
-
-	`celery -A cyto_soft_mgr worker -l info`
-
 
 # PRODUCTION MODE
+
+## RabbitMQ & CELERY
+
+1. Make sure the RabbitMQ docker container is running. See step 9 from installation section
+
+2. Run Celery as a daemon
+
 
 ## DJANGO
 
@@ -85,10 +93,3 @@ Interface to run cytomine software that requires GPU
 2. Set `settings.DEBUG` to False
 
 3. Add your server IP to `settings.ALLOWED_HOSTS`
-
-
-## CELERY
-
-1. Make sure the RabbitMQ docker container is running. See step 9 from installation section
-
-2. Run Celery as a daemon
