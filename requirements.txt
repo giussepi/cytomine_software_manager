@@ -3,5 +3,6 @@ ipython
 pyflakes
 pylint
 autopep8
+python-decouple==3.3
 Django==3.0.6
 celery
