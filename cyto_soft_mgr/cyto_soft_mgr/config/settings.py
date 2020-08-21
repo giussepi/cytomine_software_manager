@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for cyto_soft_mgr project.
 
@@ -13,8 +14,13 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import sys
 
+from decouple import AutoConfig
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+config = AutoConfig(search_path=os.path.dirname(os.path.dirname(BASE_DIR)))
 
 # Inserting apps directory
 APPS_DIR = os.path.join(BASE_DIR, 'apps')
@@ -25,12 +31,12 @@ sys.path.insert(0, APPS_DIR)
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'f3lc!k-b(5i-rhmf!e*6zz(#@e(%jjlg*uuwq)yqte+-!1qp!9'
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DJANGO_DEBUG', cast=bool, default=True)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '90.252.110.113', '192.168.42.238', '192.168.42.129']
+ALLOWED_HOSTS = [config('DJANGO_WEB_HOST'), '127.0.0.1', 'localhost']
 
 ADMINS = (
     ('Giussepi', 'e.g.lopezmolina@qmul.ac.uk'),
@@ -87,14 +93,15 @@ WSGI_APPLICATION = 'cyto_soft_mgr.config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DB info is defined at the .env file placed at the root of this project
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cyto_soft_mgr_db',
-        'USER': 'qnzhang',
-        'PASSWORD': 'MMVB10medical',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': config('POSTGRES_DB_NAME'),
+        'USER': config('POSTGRES_DB_USER'),
+        'PASSWORD': config('POSTGRES_DB_PASS'),
+        'HOST': config('POSTGRES_DB_HOST', default='127.0.0.1'),
+        'PORT': config('POSTGRES_DB_PORT', default=5432, cast=int),
         'ATOMIC_REQUESTS': True,
     }
 }
@@ -144,9 +151,9 @@ STATIC_URL = '/static/'
 #                             Cytomine credentials                            #
 ###############################################################################
 
-CYTOMINE_HOST = 'localhost-core'
-CYTOMINE_PUBLIC_KEY = 'd2be8bd7-2b0b-40c3-9e81-5ad5765568f3'
-CYTOMINE_PRIVATE_KEY = '6dfe27d7-2ad1-4ca2-8ee9-6321ec3f1318'
+CYTOMINE_HOST = config('DJANGO_CYTOMINE_HOST')
+CYTOMINE_PUBLIC_KEY = config('DJANGO_CYTOMINE_PUBLIC_KEY')
+CYTOMINE_PRIVATE_KEY = config('DJANGO_CYTOMINE_PRIVATE_KEY')
 
 ###############################################################################
 #                                    Celery                                   #
@@ -158,6 +165,3 @@ CELERY_WORKER_POOL = 'solo'
 CELERY_ALWAYS_EAGER = False
 CELERY_BROKER_HEARTBEAT = 0
 CELERY_TASK_TRACK_STARTED = True
-
-# TODO: Create the celery daemon with supervisord
-# https://docs.celeryproject.org/en/stable/userguide/daemonizing.html#daemonizing
