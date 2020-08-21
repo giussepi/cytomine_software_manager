@@ -172,13 +172,13 @@ You have two options:
        section.
 
 		2. Install psycopg2 (see step 1 from [SET UP YOUR INITIAL
-              DATASET](https://github.com/giussepi/cytomine_software_manager#set-up-your-initial-databaset)
+              DATASET](https://github.com/giussepi/cytomine_software_manager#set-up-your-initial-databaset))
 
 		3. Make `manage.py` executable (see step 2 from [SET UP YOUR INITIAL
-              DATASET](https://github.com/giussepi/cytomine_software_manager#set-up-your-initial-databaset)
+              DATASET](https://github.com/giussepi/cytomine_software_manager#set-up-your-initial-databaset))
 
 		4. Run celery (see step 2 from [RabbitMQ &
-              CELERY](https://github.com/giussepi/cytomine_software_manager#rabbitmq--celery-1)
+              CELERY](https://github.com/giussepi/cytomine_software_manager#rabbitmq--celery)
               section)
 
 		5. Finally just run the Django development server
