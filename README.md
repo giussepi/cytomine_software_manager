@@ -166,26 +166,35 @@ You have two options:
 
 	3. If you plan to modify things and want to use to Django development server
        locally, then:
+ 	    1. Open `start.sh` and comment all the code after the line that says
+          `--- Django app ---` but the last one.
 
- 	    1. Create your virtual environment and install all the requirements
+	    2. Execute `start.sh`
+
+ 	    3. Create your virtual environment and install all the requirements
        (steps 2 and 3 of [INSTALLATION](https://github.com/giussepi/cytomine_software_manager#installation)
        section.
 
-		2. Install psycopg2 (see step 1 from [SET UP YOUR INITIAL
+		4. Install psycopg2 (see step 1 from [SET UP YOUR INITIAL
               DATASET](https://github.com/giussepi/cytomine_software_manager#set-up-your-initial-databaset))
 
-		3. Make `manage.py` executable (see step 2 from [SET UP YOUR INITIAL
+		5. Make `manage.py` executable (see step 2 from [SET UP YOUR INITIAL
               DATASET](https://github.com/giussepi/cytomine_software_manager#set-up-your-initial-databaset))
 
-		4. Run celery (see step 2 from [RabbitMQ &
+		6. Run celery (see step 2 from [RabbitMQ &
               CELERY](https://github.com/giussepi/cytomine_software_manager#rabbitmq--celery)
               section)
 
-		5. Finally just run the Django development server
+		7. Finally just run the Django development server
 			``` bash
 			./manage.py runserver 0.0.0.0:8082
 			```
-		6. Remember to restart celery before testing your changes that implies running Cytomine jobs.
+		8. Remember to restart celery before testing your changes that implies
+           running Cytomine jobs.
+
+ 	    9. Do not forget to run `stop.sh` and stop Celery after finishing
+           working on your tweaks.
+
 
 6. Open `localhost:8082/admin` or `127.0.0.1:8082/admin` in your web browser.
 
