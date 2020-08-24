@@ -252,6 +252,65 @@ You have two options:
 	./stop.sh
 	```
 
+## HOW TO USE IT
+
+Once you have [Cytomine
+Uliege](https://doc.uliege.cytomine.org/display/PubOp/Install+Cytomine+on+Linux),
+[cyto_CRLM](https://github.com/QNZhang/cyto_CRLM) and this application working
+properly you are ready to start running Cytomine GPU/CPU software. The general
+steps are described below:
+
+1. Login in into `127.0.0.0:8082/admin` or into `<your domain>/admin` and add the `cyto_crlm`
+   image.
+
+	![Add cyto_CRLM](images/add_cyto_crlm.png)
+
+2. Add a new job
+   1. Copy the image ID you want to analyse. This ID is the number right next to
+       `image` in the image URL at Cytomine. e.g.: from
+       `http://localhost-core/#/project/237/image/1220/slice/1221?`the image ID
+       is 1220.
+
+   2. Add or select the ID of the project which contains the image your want to
+      analyse. This ID is the number right next to
+      `project` in the project URL at Cytomine. e.g.: from
+      `http://localhost-core/#/project/237/images` the project ID is 237.
+
+   3. Add or select the software ID you want to execute. This Id is the number
+      right next to `algorithm` in the algorithm URL. e.g: from
+      `http://localhost-core/#/algorithm/6278` the ID is 6278. To find the
+	  algorithms list just click on the Algorithms tab and then click over the
+      algorithm your are interested on.
+
+	  ![Algorithms_list](images/algorithms_list.png)
+
+	4. Select cyto_crlm as the Docker image name
+
+	5. Click save.
+
+ 	    ![Save job](images/save_job_form.png)
+
+
+All the jobs are stored on a
+[Celery](https://docs.celeryproject.org/en/latest/index.html) queue and will be
+executed in a sequential way. Thus, you can create several jobs and they will be
+executed one after another.
+
+The running job is visible on the Cytomine's project analysis page.
+
+![Cytomine project analysis](images/cytomine_project_analysis.png)
+
+All running and queued jobs are shown in the jobs page of the cytomine software
+manager.
+
+![Jobs list](images/jobs_list.png)
+
+If there any issue/error it will be referenced in the error field of the
+job. Once you know the error ID you can find its details at the Job Errors
+section of the cytomine software manager.
+
+![Job error](images/job_error.png)
+
 # TODO
 - [x] Create and start everything from a single script.
 - [x] Configure Django static directory
@@ -259,8 +318,8 @@ You have two options:
 - [x] Find and easy way to change debug to False
 - [x] Find the way to restard server and rabbitmq, maybe just using supervisorctl
 - [x] Change logging from celery and supervisor to info
+- [x] Update Readme and show how to use this application
 - [ ] Optimize Dockerfile
-- [ ] Update Readme and show how to use this application
 - [ ] Include collectstatic as one of the container tasks
 - [ ] Use nginx to serve static media
 - [ ] Run django app (from the container) through WSGI
