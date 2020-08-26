@@ -99,9 +99,9 @@ then
 else
     docker run --name ${NGINX_CONTAINER} \
 	   --env-file=.env \
-	   -v /home/giussepi/Public/environments/cytomine_software_manager/nginx/templates/production:/etc/nginx/templates \
-	   -v /home/giussepi/Public/environments/cytomine_software_manager/cyto_soft_mgr/cyto_soft_mgr/static:/myapp/static \
-	   -v /home/giussepi/Public/environments/cytomine_software_manager/nginx/html_error_pages:/myapp/html_error_pages \
+	   -v `pwd`/nginx/templates/production:/etc/nginx/templates \
+	   -v `pwd`/cyto_soft_mgr/cyto_soft_mgr/static:/myapp/static \
+	   -v `pwd`/nginx/html_error_pages:/myapp/html_error_pages \
 	   --network ${NETWORK_NAME} \
 	   -d -p ${NGINX_PORT}:${NGINX_PORT} \
 	   ${NGINX_IMAGE}

@@ -4,6 +4,10 @@ Interface to run cytomine software that requires GPU
 [Cytomine and cyto_CRLM](https://github.com/QNZhang/cyto_CRLM) are required to use this application so please install
 them.
 
+:warning::warning::warning: **General advice** :warning::warning::warning::eyes::eyes::eyes::exclamation::exclamation::exclamation:
+
+After finishing your modifications make sure to remove and create again the django and gunicorn images as well as their respective images. This step is mandatory becasue these images copies the content of the project.
+
 
 # DEVELOPMENT MODE
 
@@ -369,7 +373,7 @@ section of the cytomine software manager.
 - [x] Write somewhere that it woould be necessary to delete and re-create django & gunicorn containers the because we're exposing ports there... verify it it's necessary
   (Doing this is not necessary. Verified!)
 - [X] Update Readme
-- [ ] Try to improve paths on volumes
+- [X] Improve NGINX volume paths
 - [ ] Optimize Dockerfile
 - [ ] Include collectstatic as one of the container tasks
 - [ ] Fix the logging
