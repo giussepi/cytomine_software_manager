@@ -368,7 +368,7 @@ section of the cytomine software manager.
 - [ ] Try to improve paths on volumes
 - [ ] Optimize Dockerfile
 - [ ] Include collectstatic as one of the container tasks
-- [ ] Find and easy way to set log levels
+- [x] Find and easy way to set log levels
 - [ ] Fix the logging
 - [ ] Fix nginx logs
 - [ ] Fix the script that waits for postgres to be ready
