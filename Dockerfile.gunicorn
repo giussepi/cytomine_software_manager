@@ -77,10 +77,9 @@ RUN pip3 --no-cache-dir install supervisor && \
 	mkdir -p /etc/supervisor && \
 	mkdir -p /var/log/supervisord && \
 	mkdir -p /var/log/celery && \
-	mkdir -p /var/log/django_app
+	mkdir -p /var/log/gunicorn_app
 
-COPY supervisor_conf/ /etc/supervisor/
-
+COPY supervisor_conf/production/ /etc/supervisor/
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 	apt-get update && apt-get install -y \
@@ -101,6 +100,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
 	containerd.io \
 	&& rm -rf /var/lib/apt/lists/*
 
-EXPOSE 8082
+EXPOSE $GUNICORN_PORT
 
 CMD ["/myapp/sync_and_run.sh"]

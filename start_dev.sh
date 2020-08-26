@@ -30,14 +30,13 @@ then
     docker stop ${POSTGRES_CONTAINER}
     docker start ${POSTGRES_CONTAINER}
 else
-    docker volume create --name cyto_db_postgres12 > /dev/null
+    docker volume create --name ${POSTGRES_VOLUME} > /dev/null
     docker run --name ${POSTGRES_CONTAINER} \
 	   --env-file=.env \
-	   -d \
-	   -v cyto_db_postgres12:/var/lib/postgresql/data \
+	   -d -p ${POSTGRES_DB_PORT}:${POSTGRES_DB_PORT} \
+	   -v ${POSTGRES_VOLUME}:/var/lib/postgresql/data \
 	   --network ${NETWORK_NAME} \
 	   ${POSTGRES_IMAGE}
-	   # -p ${POSTGRES_DB_PORT}:${POSTGRES_DB_PORT} \
 fi
 
 # -------------------- RabbitMQ --------------------
@@ -47,13 +46,12 @@ then
     docker stop ${RABBITMQ_CONTAINER}
     docker start ${RABBITMQ_CONTAINER}
 else
-    docker volume create --name cyto_rabbitmq > /dev/null
+    docker volume create --name ${RABBITMQ_VOLUME} > /dev/null
     docker run --name ${RABBITMQ_CONTAINER} \
-	   -d \
-	   -v cyto_rabbitmq:/var/lib/rabbitmq/data \
+	   -d -p ${RABBITMQ_PORT}:${RABBITMQ_PORT} \
+	   -v ${RABBITMQ_VOLUME}:/var/lib/rabbitmq/data \
 	   --network ${NETWORK_NAME} \
 	   ${RABBITMQ_IMAGE}
-    	   # -p ${RABBITMQ_PORT}:${RABBITMQ_PORT} \
 fi
 
 # -------------------- Django app --------------------
@@ -62,21 +60,20 @@ if [[ ! "$(docker images -q ${DJANGO_IMAGE})" ]]
 then
     echo "---------- Buiding Django image ----------"
     # docker build --network=host --build-arg NEW=True -t ${DJANGO_IMAGE} . > /dev/null
-    docker build --build-arg NEW=True -t ${DJANGO_IMAGE} . > /dev/null
+    docker build --build-arg NEW=True -t ${DJANGO_IMAGE} -f Dockerfile.django . > /dev/null
     echo "---------- Django image created! ----------"
 fi
 
-# TODO: FIX THIS
 # # Waiting for postgres to be ready
-# if [ true = true ]
-# then
-#     echo "Waiting for postgres..."
-#     # while ! nc -z ${POSTGRES_DB_HOST} ${POSTGRES_DB_PORT}; do
-#     while ! nc -z localhost ${POSTGRES_DB_PORT}; do
-#       sleep .1
-#     done
-#     echo "PostgreSQL started"
-# fi
+if [ true = true ]
+then
+    echo "Waiting for postgres..."
+    # while ! nc -z ${POSTGRES_DB_HOST} ${POSTGRES_DB_PORT}; do
+    while ! nc -z localhost ${POSTGRES_DB_PORT}; do
+      sleep .1
+    done
+    echo "PostgreSQL started"
+fi
 
 # Build the container or restart it if it already exists
 if [[ "$(docker ps -q -f name=${DJANGO_CONTAINER})" ]]
@@ -94,10 +91,9 @@ else
 	   --env-file=.env \
 	   --gpus all \
 	   -v /var/run/docker.sock:/var/run/docker.sock \
-	   -d \
+	   -d -p ${DJANGO_PORT}:${DJANGO_PORT} \
 	   --network ${NETWORK_NAME} \
 	   ${DJANGO_IMAGE}
-    	   # -p ${DJANGO_PORT}:${DJANGO_PORT} \
 fi
 
 # -------------------- NGINX --------------------
@@ -109,7 +105,7 @@ then
 else
     docker run --name ${NGINX_CONTAINER} \
 	   --env-file=.env \
-	   -v /home/giussepi/Public/environments/cytomine_software_manager/nginx/templates:/etc/nginx/templates \
+	   -v /home/giussepi/Public/environments/cytomine_software_manager/nginx/templates/development:/etc/nginx/templates \
 	   -v /home/giussepi/Public/environments/cytomine_software_manager/cyto_soft_mgr/cyto_soft_mgr/static:/myapp/static \
 	   -v /home/giussepi/Public/environments/cytomine_software_manager/nginx/html_error_pages:/myapp/html_error_pages \
 	   --network ${NETWORK_NAME} \

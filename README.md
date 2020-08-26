@@ -66,6 +66,13 @@ You have two options:
 		```
 	     **Note:** The port must match the one defined on your `.env` file.
 
+**IMPORTANT** Do not forget to update the following POSTGRES value at the `.env` file properly
+
+```
+# must point the local host to be reachable by the Django development server
+POSTGRES_DB_HOST=127.0.0.1
+```
+
 ## SET UP YOUR INITIAL DATABASET
 1. Install psycopg2
 
@@ -98,7 +105,16 @@ You have two options:
    ```
    **Note:** The port must match the one defined on your `.env` file.
 
-2. Run the celery worker server (from the same folder where manage.py is located)
+2. Do not forget to update the following RABBITMQ values at `.env` file properly
+
+	```
+	# default port use by RabbitMQ
+	RABBITMQ_PORT=5672
+	# must point the local host to be reachable by the Django development server
+	RABBITMQ_HOST=127.0.0.1
+	```
+
+3. Run the celery worker server (from the same folder where manage.py is located).
 
    `celery -A cyto_soft_mgr worker -l info`
 
@@ -106,12 +122,11 @@ You have two options:
 
 1. Set debug mode in your `.env` file.
 
-	`DJANGO_DEBUG = True`
+	`DJANGO_DEBUG=True`
 
-2. Run django development server and open `localhost:8082/admin` or `127.0.0.1:8082/admin` in your web browser
+2. Run django development server and open `localhost:8082/admin` or `127.0.0.1:8082/admin` in your web browser. This must be done on a different shell (tab) with the virtual environment activated because the previous one is being used by Celery.
 
     `./manage.py runserver 0.0.0.0:8082`
-
 
 3. The Django development server is reloaded automatically after saving
    changes; however, If you are going to run/test Cytomine jobs, then your must
@@ -134,23 +149,23 @@ You have two options:
 	```
 	1. Do not forget to enable debug mode in your `.env` file.
 
-		`DJANGO_DEBUG = True`
+		`DJANGO_DEBUG=True`
 
-3. Make start.sh and stop.sh executable
+3. Make start_dev.sh and stop.sh executable
 
 	``` bash
-	sudo chmod +x start.sh
+	sudo chmod +x start_dev.sh
 	sudo chmod +x stop.sh
 	```
 
-5. Create the images and containers
+4. Create the images and containers
 
    Here you have 3 options:
 
-   1. If you do not plan to modify anything then just execute `start.sh`.
+   1. If you do not plan to modify anything then just execute `start_dev.sh`.
 
    2. If you plan do modify things, you can use the DJANGO_CONTAINER but
-      modified a bit. So open the `start.sh` and add the following line right after
+      modified a bit. So open the `start_dev.sh` and add the following line right after
 	  `docker run --name ${DJANGO_CONTAINER} \`:
 
 	  ``` bash
@@ -166,10 +181,10 @@ You have two options:
 
 	3. If you plan to modify things and want to use to Django development server
        locally, then:
- 	    1. Open `start.sh` and comment all the code after the line that says
-          `--- Django app ---` but the last one.
+ 	    1. Open `start_dev.sh` and comment all the code after the line that says
+          `--- Django app ---` but the last line that prints "Done".
 
-	    2. Execute `start.sh`
+	    2. Execute `start_dev.sh`
 
  	    3. Create your virtual environment and install all the requirements
        (steps 2 and 3 of [INSTALLATION](https://github.com/giussepi/cytomine_software_manager#installation)
@@ -180,31 +195,37 @@ You have two options:
 
 		5. Make `manage.py` executable (see step 2 from [SET UP YOUR INITIAL
               DATASET](https://github.com/giussepi/cytomine_software_manager#set-up-your-initial-databaset))
+		6. Set the following variables at the `.env` file as shown below
 
-		6. Run celery (see step 2 from [RabbitMQ &
+		    ```
+		    # must point the local host so the Django development server can find it
+		    POSTGRES_DB_HOST=127.0.0.1
+            # default port use by RabbitMQ
+	        RABBITMQ_PORT=5672
+            # must point the local host to be reachable by the Django development server
+            RABBITMQ_HOST=127.0.0.1
+		    ```
+
+		6. Run celery (see step 3 from [RabbitMQ &
               CELERY](https://github.com/giussepi/cytomine_software_manager#rabbitmq--celery)
               section)
 
-		7. Finally just run the Django development server
+		7. Finally just run the Django development server (on a new shell tab with the same virtual environment activated)
 			``` bash
 			./manage.py runserver 0.0.0.0:8082
 			```
 		8. Remember to restart celery before testing your changes that implies
            running Cytomine jobs.
 
- 	    9. Do not forget to run `stop.sh` and stop Celery after finishing
-           working on your tweaks.
+5. Open `localhost:8082/admin` or `127.0.0.1:8082/admin` in your web browser.
 
-
-6. Open `localhost:8082/admin` or `127.0.0.1:8082/admin` in your web browser.
-
-7. Stopping all the containers is simple, just execute:
+6. Stopping all the containers is simple, just execute:
 
 	``` bash
 	./stop.sh
 	```
 
-# PRODUCTION MODE (not completed yet! :bowtie:)
+# PRODUCTION MODE :bowtie:
 
 1. Clone this repository and go into its directory
 
@@ -218,41 +239,45 @@ You have two options:
 	``` bash
 	cp env.template .env
 	```
+	**Note** if you were working on development mode just rename your `.env` and create a new one based on the template provided.
+
 	1. Do not forget to disable debug mode in your `.env` file.
 
-	`DJANGO_DEBUG = False`
+	    `DJANGO_DEBUG=False`
 
-	2. Do not forget to add your host/domain name to `DJANGO_WEB_HOST`, e.g.:
+	2. Do not forget to add your host/domain name to `NGINX_HOST` and set your port, e.g.:
 
-	```
-	DJANGO_WEB_HOST=90.254.58.127
-	# or
-	DJANGO_WEB_HOST=localhost
-	# or
-	DJANGO_WEB_HOST=www.mydomain.com
-	```
+  	   ```
+	   NGINX_HOST=90.254.58.127
+	   # or
+	   NGINX_HOST=localhost
+	   # or
+	   NGINX_HOST=www.mydomain.com
+
+	   NGINX_PORT=8083
+	   ```
 
 3. Run Django collectstatic command
 
 	`./manage.py collectstatic`
 
 
-4. Make start.sh and stop.sh executable
+4. Make start_prod.sh and stop.sh executable
 
 	``` bash
-	sudo chmod +x start.sh
+	sudo chmod +x start_prod.sh
 	sudo chmod +x stop.sh
 	```
 
 5. Create the images and containers
 
 	``` bash
-	./start.sh
+	./start_prod.sh
 	```
 
 6. Go to your host/admin. e.g.:
 
-	`127.0.0.1:8082/admin`
+	`<NGINX_HOST>:<NGINX_PORT>/admin`
 
 
 7. Stop all the containers
@@ -269,7 +294,7 @@ Uliege](https://doc.uliege.cytomine.org/display/PubOp/Install+Cytomine+on+Linux)
 properly you are ready to start running Cytomine GPU/CPU software. The general
 steps are described below:
 
-1. Login in into `127.0.0.0:8082/admin` or into `<your domain>/admin` and add the `cyto_crlm`
+1. Login in into `<NGINX_HOST>:<NGINX_PORT>/admin` or into `<your domain>/admin` and add the `cyto_crlm`
    image.
 
 	![Add cyto_CRLM](images/add_cyto_crlm.png)
@@ -328,9 +353,26 @@ section of the cytomine software manager.
 - [x] Find the way to restard server and rabbitmq, maybe just using supervisorctl
 - [x] Change logging from celery and supervisor to info
 - [x] Update Readme and show how to use this application
+- [x] Use nginx to serve static media
+- [x] Run django app (from the container) through uvicorn
+- [x] Reorganize nginx folder
+- [x] Create container for gunicorn
+- [x] Improve nginx config
+- [x] Configure 500 error page template
+- [x] Use environmental variables to configure nginx, uvicorn and django app
+- [x] Use environment variables in supervisor configuration files
+- [x] Expose container ports during development to allow django devlopement server connect
+- [x] Dockerfiles dev and prod updated to use env variables
+- [x] Test prod and dev environments
+- [x] Clean code
+- [ ] Try to improve paths on volumes
 - [ ] Optimize Dockerfile
 - [ ] Include collectstatic as one of the container tasks
-- [ ] Use nginx to serve static media
-- [ ] Run django app (from the container) through WSGI
 - [ ] Find and easy way to set log levels
 - [ ] Fix the logging
+- [ ] Fix nginx logs
+- [ ] Fix the script that waits for postgres to be ready
+- [ ] Update Readme
+- [ ] Write somewhete that deleting django and gunicorn containers is necessary when modifying the configutaion???
+- [x] Write somewhere that it woould be necessary to delete and re-create django & gunicorn containers the because we're exposing ports there... verify it it's necessary
+  It's not necessary

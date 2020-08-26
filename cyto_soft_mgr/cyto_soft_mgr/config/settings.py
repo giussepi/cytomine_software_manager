@@ -166,4 +166,4 @@ CELERY_ALWAYS_EAGER = False
 CELERY_BROKER_HEARTBEAT = 0
 CELERY_TASK_TRACK_STARTED = True
 CELERY_BROKER_URL = 'amqp://guest:guest@{}:{}//'.format(
-    config('RABBITMQ_CONTAINER'), config('RABBITMQ_PORT'))
+    config('RABBITMQ_HOST'), config('RABBITMQ_PORT'))
