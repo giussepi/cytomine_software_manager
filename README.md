@@ -365,14 +365,13 @@ section of the cytomine software manager.
 - [x] Dockerfiles dev and prod updated to use env variables
 - [x] Test prod and dev environments
 - [x] Clean code
+- [x] Find and easy way to set log levels
+- [x] Write somewhere that it woould be necessary to delete and re-create django & gunicorn containers the because we're exposing ports there... verify it it's necessary
+  (Doing this is not necessary. Verified!)
+- [X] Update Readme
 - [ ] Try to improve paths on volumes
 - [ ] Optimize Dockerfile
 - [ ] Include collectstatic as one of the container tasks
-- [x] Find and easy way to set log levels
 - [ ] Fix the logging
 - [ ] Fix nginx logs
 - [ ] Fix the script that waits for postgres to be ready
-- [ ] Update Readme
-- [ ] Write somewhete that deleting django and gunicorn containers is necessary when modifying the configutaion???
-- [x] Write somewhere that it woould be necessary to delete and re-create django & gunicorn containers the because we're exposing ports there... verify it it's necessary
-  It's not necessary
