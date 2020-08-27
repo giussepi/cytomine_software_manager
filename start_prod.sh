@@ -63,18 +63,6 @@ then
     echo "---------- Gunicorn image created! ----------"
 fi
 
-# TODO: FIX THIS
-# # Waiting for postgres to be ready
-# if [ true = true ]
-# then
-#     echo "Waiting for postgres..."
-#     # while ! nc -z ${POSTGRES_DB_HOST} ${POSTGRES_DB_PORT}; do
-#     while ! nc -z localhost ${POSTGRES_DB_PORT}; do
-#       sleep .1
-#     done
-#     echo "PostgreSQL started"
-# fi
-
 # Build the container or restart it if it already exists
 if [[ "$(docker ps -q -f name=${GUNICORN_CONTAINER})" ]]
 then

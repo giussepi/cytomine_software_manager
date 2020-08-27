@@ -8,7 +8,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y update && \
 	add-apt-repository ppa:xorg-edgers/ppa && \
 	apt-get -y update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
 	cmake \
 	git \
 	pkg-config \
@@ -34,6 +34,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	python3-pip \
 	python3-dev \
 	libpq-dev \
+        netcat \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main"
@@ -71,6 +72,8 @@ RUN if [ "$NEW" = "True" ]; then \
 	chmod +x manage.py && \
         chmod +x /myapp/sync_and_run.sh; \
 	fi
+
+RUN mv /myapp/wait-for /bin/wait-for && chmod +x /bin/wait-for
 
 # Supervisord
 RUN pip3 --no-cache-dir install supervisor && \

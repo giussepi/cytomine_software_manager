@@ -375,7 +375,7 @@ section of the cytomine software manager.
 - [X] Improve NGINX volume paths
 - [x] Include collectstatic as one of the gunicorn container tasks
 - [x] Nginx dev server serving static data
+- [x] Fix the script that waits for postgres to be ready
 - [ ] Optimize Dockerfile
 - [ ] Fix the logging
 - [ ] Fix nginx logs
-- [ ] Fix the script that waits for postgres to be ready
