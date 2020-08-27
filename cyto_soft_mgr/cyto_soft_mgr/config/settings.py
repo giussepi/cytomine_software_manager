@@ -36,7 +36,12 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DJANGO_DEBUG', cast=bool, default=True)
 
-ALLOWED_HOSTS = [config('DJANGO_WEB_HOST'), '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    config('DJANGO_WEB_HOST'),
+    config('GUNICORN_HOST'),
+    config('NGINX_HOST'),
+    '127.0.0.1', 'localhost'
+]
 
 ADMINS = (
     ('Giussepi', 'e.g.lopezmolina@qmul.ac.uk'),
