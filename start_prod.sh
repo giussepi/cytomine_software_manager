@@ -85,6 +85,7 @@ else
 	   --env-file=.env \
 	   --gpus all \
 	   -v /var/run/docker.sock:/var/run/docker.sock \
+	   -v ${DJANGO_STATIC_VOLUME}:/myapp/cyto_soft_mgr/cyto_soft_mgr/static \
 	   -d \
 	   --network ${NETWORK_NAME} \
 	   ${GUNICORN_IMAGE}
@@ -100,8 +101,8 @@ else
     docker run --name ${NGINX_CONTAINER} \
 	   --env-file=.env \
 	   -v `pwd`/nginx/templates/production:/etc/nginx/templates \
-	   -v `pwd`/cyto_soft_mgr/cyto_soft_mgr/static:/myapp/static \
 	   -v `pwd`/nginx/html_error_pages:/myapp/html_error_pages \
+	   -v ${DJANGO_STATIC_VOLUME}:/myapp/cyto_soft_mgr/cyto_soft_mgr/static \
 	   --network ${NETWORK_NAME} \
 	   -d -p ${NGINX_PORT}:${NGINX_PORT} \
 	   ${NGINX_IMAGE}

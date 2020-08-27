@@ -34,15 +34,16 @@ server {
 
     location /static {
         # path for static files
-        root /myapp;
+        root /myapp/cyto_soft_mgr/cyto_soft_mgr;
 	expires 30d;
     }
 
-    location /media {
-        # path for media files
-        root /myapp;
-    	expires 30d;
-    }
+    # Not used for now...
+    # location /media {
+    #     # path for media files
+    #     root /myapp/cyto_soft_mgr/cyto_soft_mgr;
+    # 	expires 30d;
+    # }
 
     error_page 500 502 503 504 /500.html;
     location = /500.html {

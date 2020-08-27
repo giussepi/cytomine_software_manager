@@ -370,12 +370,11 @@ section of the cytomine software manager.
 - [x] Test prod and dev environments
 - [x] Clean code
 - [x] Find and easy way to set log levels
-- [x] Write somewhere that it woould be necessary to delete and re-create django & gunicorn containers the because we're exposing ports there... verify it it's necessary
-  (Doing this is not necessary. Verified!)
+- [x] Write somewhere that it would be necessary to delete and re-create django & gunicorn containers the because we're exposing ports there
 - [X] Update Readme
 - [X] Improve NGINX volume paths
+- [x] Include collectstatic as one of the gunicorn container tasks
 - [ ] Optimize Dockerfile
-- [ ] Include collectstatic as one of the container tasks
 - [ ] Fix the logging
 - [ ] Fix nginx logs
 - [ ] Fix the script that waits for postgres to be ready
