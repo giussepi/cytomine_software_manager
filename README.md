@@ -374,6 +374,7 @@ section of the cytomine software manager.
 - [X] Update Readme
 - [X] Improve NGINX volume paths
 - [x] Include collectstatic as one of the gunicorn container tasks
+- [x] Nginx dev server serving static data
 - [ ] Optimize Dockerfile
 - [ ] Fix the logging
 - [ ] Fix nginx logs
