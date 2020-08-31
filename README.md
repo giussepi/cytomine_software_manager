@@ -377,5 +377,5 @@ section of the cytomine software manager.
 - [x] Nginx dev server serving static data
 - [x] Fix the script that waits for postgres to be ready
 - [ ] Optimize Dockerfile
-- [ ] Fix the logging
+- [X] Fix the logging (adding log level to gunicorn configuration)
 - [ ] Fix nginx logs
