@@ -376,6 +376,8 @@ section of the cytomine software manager.
 - [x] Include collectstatic as one of the gunicorn container tasks
 - [x] Nginx dev server serving static data
 - [x] Fix the script that waits for postgres to be ready
-- [ ] Optimize Dockerfile
 - [X] Fix the logging (adding log level to gunicorn configuration)
-- [ ] Fix nginx logs
+- [X] Fix nginx logs
+- [X] Configure rotating logs for nginx
+- [ ] Create a volumen for Gunicorn container
+- [ ] Optimize Dockerfile

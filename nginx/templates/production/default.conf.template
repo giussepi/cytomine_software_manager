@@ -17,8 +17,8 @@ server {
     # server_domain_or_IP
     # domain1.com www.domain1.com;
     server_name ${NGINX_HOST};
-    # access_log /logs/localhost.access.log main;
-    # access_log /etc/nginx/logs/$host main;
+    access_log /var/log/nginx/${NGINX_HOST}_access.log combined;
+    error_log /var/log/nginx/${NGINX_HOST}_error.log ${NGINX_SERVER_ERROR_LOG_LEVEL};
     keepalive_timeout 5;
 
     location / {
