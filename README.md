@@ -379,5 +379,5 @@ section of the cytomine software manager.
 - [X] Fix the logging (adding log level to gunicorn configuration)
 - [X] Fix nginx logs
 - [X] Configure rotating logs for nginx
-- [ ] Create a volumen for Gunicorn container
+- [x] Create a volumen for Gunicorn container (to preserver logs)
 - [ ] Optimize Dockerfile
