@@ -69,11 +69,13 @@ then
     docker stop ${GUNICORN_CONTAINER}
     docker start ${GUNICORN_CONTAINER}
 else
+    docker volume create --name ${GUNICORN_VOLUME} > /dev/null
     docker run --name ${GUNICORN_CONTAINER} \
 	   --env-file=.env \
 	   --gpus all \
 	   -v /var/run/docker.sock:/var/run/docker.sock \
 	   -v ${DJANGO_STATIC_VOLUME}:/myapp/cyto_soft_mgr/cyto_soft_mgr/static \
+	   -v ${GUNICORN_VOLUME}:/var/log \
 	   -d \
 	   --network ${NETWORK_NAME} \
 	   ${GUNICORN_IMAGE}
