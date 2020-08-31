@@ -80,17 +80,29 @@ else
 fi
 
 # -------------------- NGINX --------------------
+# If the image does not exit, then creates it
+if [[ ! "$(docker images -q ${NGINX_IMAGE})" ]]
+then
+    cd nginx
+    echo "---------- Buiding Nginx image ----------"
+    docker build -t ${NGINX_IMAGE} . > /dev/null
+    echo "---------- Nginx image created! ----------"
+    cd ..
+fi
+
 # Build the container or restart it if it already exists
 if [[ "$(docker ps -q -f name=${NGINX_CONTAINER})" ]]
 then
     docker stop ${NGINX_CONTAINER}
     docker start ${NGINX_CONTAINER}
 else
+    docker volume create --name ${NGINX_VOLUME} > /dev/null
     docker run --name ${NGINX_CONTAINER} \
 	   --env-file=.env \
 	   -v `pwd`/nginx/templates/production:/etc/nginx/templates \
 	   -v `pwd`/nginx/html_error_pages:/myapp/html_error_pages \
 	   -v ${DJANGO_STATIC_VOLUME}:/myapp/cyto_soft_mgr/cyto_soft_mgr/static \
+    	   -v ${NGINX_VOLUME}:/var/log/nginx \
 	   --network ${NETWORK_NAME} \
 	   -d -p ${NGINX_PORT}:${NGINX_PORT} \
 	   ${NGINX_IMAGE}
